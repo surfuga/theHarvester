@@ -5,9 +5,10 @@ import re
 
 class htmlExport():
 
-    def __init__(self, users, hosts, vhosts, dnsres,
+    def __init__(self, users, names, hosts, vhosts, dnsres,
                  dnsrev, file, domain, shodan, tldres):
         self.users = users
+        self.names = names
         self.hosts = hosts
         self.vhost = vhosts
         self.fname = file
@@ -96,11 +97,12 @@ class htmlExport():
         graph = graphs.BarGraph('vBar')
         graph.values = [len(
             self.users),
+            len(self.names),
             len(self.hosts),
             len(self.vhost),
             len(self.tldres),
             len(self.shodan)]
-        graph.labels = ['Emails', 'hosts', 'Vhost', 'TLD', 'Shodan']
+        graph.labels = ['Emails', 'Names', 'hosts', 'Vhost', 'TLD', 'Shodan']
         graph.showValues = 1
         page.body(graph.create())
         page.h3("E-mails names found:")
@@ -110,6 +112,13 @@ class htmlExport():
             page.ul.close()
         else:
             page.h2("No emails found")
+        page.h3("Names found:")
+        if self.names != []:
+            page.ul(class_="userslist")
+            page.li(self.names, class_="useritem")
+            page.ul.close()
+        else:
+            page.h2("No names found")
         page.h3("Hosts found:")
         if self.hosts != []:
             page.ul(class_="softlist")

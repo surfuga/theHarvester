@@ -484,6 +484,7 @@ def start(argv):
             print "[+] Saving files..."
             html = htmlExport.htmlExport(
                 all_emails,
+                all_people,
                 full,
                 vhost,
                 dnsres,
