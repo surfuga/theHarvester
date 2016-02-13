@@ -445,6 +445,38 @@ def start(argv):
                     file.write('<vhost>' + '<ip>' + x[0] + '</ip><hostname>' + x[1]  + '</hostname>' + '</vhost>')
                 else:
                     file.write('<vhost>' + x + '</vhost>')
+
+            if shodanres != []:
+                shodanalysis = []
+                for x in shodanres:
+                    res = x.split("SAPO")
+                    # print " res[0] " + res[0] # ip/host
+                    # print " res[1] " + res[1] # banner/info
+                    # print " res[2] " + res[2] # port
+                    file.write('<shodan>')
+                    #page.h3(res[0])
+                    file.write('<host>' + res[0] + '</host>')
+                    #page.a("Port :" + res[2])
+                    file.write('<port>' + res[2] + '</port>')
+                    #page.pre(res[1])
+                    file.write('<banner><!--' + res[1] + '--></banner>')
+                    
+                    
+                    reg_server = re.compile('Server:.*')
+                    temp = reg_server.findall(res[1])
+                    if temp != []:
+                        shodanalysis.append(res[0] + ":" + temp[0])
+                    
+                    file.write('</shodan>')
+                if shodanalysis != []:
+                    shodanalysis=sorted(set(shodanalysis))
+                    file.write('<servers>')
+                    for x in shodanalysis:
+                        #page.pre(x)
+                        file.write('<server>' + x + '</server>')
+                    file.write('</servers>')
+                    
+
             file.write('</theHarvester>')
             file.close
             print "Files saved!"
