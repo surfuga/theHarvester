@@ -435,7 +435,11 @@ def start(argv):
                 else:
                     file.write('<host>' + x + '</host>')
             for x in vhost:
-                file.write('<vhost>' + x + '</vhost>')
+                x = x.split(":")
+                if len(x) == 2:
+                    file.write('<vhost>' + '<ip>' + x[0] + '</ip><hostname>' + x[1]  + '</hostname>' + '</vhost>')
+                else:
+                    file.write('<vhost>' + x + '</vhost>')
             file.write('</theHarvester>')
             file.close
             print "Files saved!"
