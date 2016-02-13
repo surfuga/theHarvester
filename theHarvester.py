@@ -506,8 +506,6 @@ def start(argv):
                 file.write('<email>' + x + '</email>')
             for x in all_people:
                 file.write('<person>' + x + '</person>')
-            #full_host = hostchecker.Checker(all_hosts)
-            #full = full_host.check()
             for x in full:
                 x = x.split(":")
                 if len(x) == 2:
