@@ -236,6 +236,7 @@ def start(argv):
         print "Full harvest.."
         all_emails = []
         all_hosts = []
+        all_people = []
         virtual = "basic"
         print "[-] Searching in Google.."
         search = googlesearch.search_google(word, limit, start)
@@ -266,23 +267,96 @@ def start(argv):
         hosts = search.get_hostnames()
         all_hosts.extend(hosts)
         all_emails.extend(emails)
+
+           
+        print "[-] Searching in Dogpilesearch.."
+        search = dogpilesearch.search_dogpile(word, limit)
+        search.process()
+        emails = search.get_emails()
+        hosts = search.get_hostnames()
+        all_hosts.extend(hosts)
+        all_emails.extend(emails)
+
+        print "[-] Searching in Yahoo.."
+        search = yahoosearch.search_yahoo(word, limit)
+        search.process()
+        emails = search.get_emails()
+        hosts = search.get_hostnames()
+        all_hosts.extend(hosts)
+        all_emails.extend(emails)
+
+        print "[-] Searching in Baidu.."
+        search = baidusearch.search_baidu(word, limit)
+        search.process()
+        emails = search.get_emails()
+        hosts = search.get_hostnames()
+        all_hosts.extend(hosts)
+        all_emails.extend(emails)
+
+
+        print "[-] Searching in Jigsaw.."
+        search = jigsaw.search_jigsaw(word, limit)
+        search.process()
+        people = search.get_people()
+        all_people.extend(people)
+
+        print "[-] Searching in Google+ .."
+        search = googleplussearch.search_googleplus(word, limit)
+        search.process()
+        people = search.get_people()
+        all_people.extend(people)
+
+
+        print "[-] Searching in Twitter .."
+        search = twittersearch.search_twitter(word, limit)
+        search.process()
+        people = search.get_people()
+        all_people.extend(people)
+
+
+        print "[-] Searching in Linkedin.."
+        search = linkedinsearch.search_linkedin(word, limit)
+        search.process()
+        people = search.get_people()
+        all_people.extend(people)
+
+        print "[-] Searching in Google profiles.."
+        search = googlesearch.search_google(word, limit, start)
+        search.process_profiles()
+        people = search.get_profiles()
+        all_people.extend(people)
+
+
+
     #Results############################################################
     print "\n\n[+] Emails found:"
     print "------------------"
     if all_emails == []:
         print "No emails found"
     else:
+        all_emails=sorted(set(all_emails))
         for emails in all_emails:
             print emails
+
+    print "\n\n[+]Users found:"
+    print "-------------------"
+    if all_people == []:
+        print "No people found"
+    else:   
+        all_people = sorted(set(all_people))
+        for users in all_people:
+            print users
 
     print "\n[+] Hosts found in search engines:"
     print "------------------------------------"
     if all_hosts == []:
         print "No hosts found"
     else:
+        all_hosts=sorted(set(all_hosts))
         print "[-] Resolving hostnames IPs... "
         full_host = hostchecker.Checker(all_hosts)
         full = full_host.check()
+        #full=sorted(set(full))
         for host in full:
             ip = host.split(':')[0]
             print host
@@ -359,6 +433,7 @@ def start(argv):
                 print l + "\t" + x
                 vhost.append(l + ":" + x)
                 full.append(l + ":" + x)
+        vhost=sorted(set(vhost))
     else:
         pass
     shodanres = []
@@ -403,10 +478,6 @@ def start(argv):
         pass
 
     #Reporting#######################################################
-    all_emails=sorted(set(all_emails))
-    all_hosts=sorted(set(all_hosts))
-    vhost=sorted(set(vhost))
-    full=sorted(set(full))
 
     if filename != "":
         try:
@@ -431,6 +502,8 @@ def start(argv):
             file.write('<?xml version="1.0" encoding="UTF-8"?><theHarvester>')
             for x in all_emails:
                 file.write('<email>' + x + '</email>')
+            for x in all_people:
+                file.write('<person>' + x + '</person>')
             full_host = hostchecker.Checker(all_hosts)
             full = full_host.check()
             for x in full:
