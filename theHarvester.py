@@ -429,7 +429,11 @@ def start(argv):
             full = full_host.check()
             for x in full:
             #for x in all_hosts:
-                file.write('<host>' + x + '</host>')
+                x = x.split(":")
+                if len(x) == 2:
+                    file.write('<host>' + '<ip>' + x[0] + '</ip><hostname>' + x[1]  + '</hostname>' + '</host>')
+                else:
+                    file.write('<host>' + x + '</host>')
             for x in vhost:
                 file.write('<vhost>' + x + '</vhost>')
             file.write('</theHarvester>')
