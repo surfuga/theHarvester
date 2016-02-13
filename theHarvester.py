@@ -402,6 +402,12 @@ def start(argv):
     else:
         pass
 
+    #Reporting#######################################################
+    all_emails=sorted(set(all_emails))
+    all_hosts=sorted(set(all_hosts))
+    vhost=sorted(set(vhost))
+    full=sorted(set(full))
+
     if filename != "":
         try:
             print "[+] Saving files..."
@@ -428,7 +434,6 @@ def start(argv):
             full_host = hostchecker.Checker(all_hosts)
             full = full_host.check()
             for x in full:
-            #for x in all_hosts:
                 x = x.split(":")
                 if len(x) == 2:
                     file.write('<host>' + '<ip>' + x[0] + '</ip><hostname>' + x[1]  + '</hostname>' + '</host>')
