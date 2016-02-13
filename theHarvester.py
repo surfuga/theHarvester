@@ -81,6 +81,7 @@ def start(argv):
     virtual = False
     limit = 100
     dnsserver = ""
+    all_people=[]
     for opt, arg in opts:
         if opt == '-l':
             limit = int(arg)
@@ -505,8 +506,8 @@ def start(argv):
                 file.write('<email>' + x + '</email>')
             for x in all_people:
                 file.write('<person>' + x + '</person>')
-            full_host = hostchecker.Checker(all_hosts)
-            full = full_host.check()
+            #full_host = hostchecker.Checker(all_hosts)
+            #full = full_host.check()
             for x in full:
                 x = x.split(":")
                 if len(x) == 2:
