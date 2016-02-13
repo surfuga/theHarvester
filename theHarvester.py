@@ -425,7 +425,10 @@ def start(argv):
             file.write('<?xml version="1.0" encoding="UTF-8"?><theHarvester>')
             for x in all_emails:
                 file.write('<email>' + x + '</email>')
-            for x in all_hosts:
+            full_host = hostchecker.Checker(all_hosts)
+            full = full_host.check()
+            for x in full:
+            #for x in all_hosts:
                 file.write('<host>' + x + '</host>')
             for x in vhost:
                 file.write('<vhost>' + x + '</vhost>')
